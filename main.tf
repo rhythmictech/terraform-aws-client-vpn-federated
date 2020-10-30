@@ -44,6 +44,26 @@ resource "aws_ec2_client_vpn_endpoint" "this" {
   }
 }
 
+resource "aws_default_security_group" "this" {
+  vpc_id = var.vpc_id
+
+  ingress {
+    description = "Allow self access only by default"
+    from_port   = 0
+    protocol    = -1
+    self        = true
+    to_port     = 0
+  }
+
+  egress {
+    description = "Allow egress by default"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_ec2_client_vpn_network_association" "this" {
   for_each = toset(var.associated_subnets) #avoid ordering errors by using a for_each instead of count
 

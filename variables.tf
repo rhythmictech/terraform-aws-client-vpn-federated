@@ -61,11 +61,12 @@ variable "saml_provider_arn" {
 
     condition = (
       var.saml_provider_arn == null ||
-      length(regexall(
+      try(length(regexall(
         "^arn:aws:iam::(?P<account_id>\\d{12}):saml-provider/(?P<provider_name>[\\w+=,\\.@-]+)$",
         var.saml_provider_arn
-      )) > 0
-    )
+        )) > 0,
+        false
+    ))
   }
 }
 
@@ -133,4 +134,9 @@ variable "additional_routes" {
 variable "associated_subnets" {
   type        = list(string)
   description = "List of subnets to associate with the VPN endpoint"
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "ID of VPC to attach VPN to"
 }
