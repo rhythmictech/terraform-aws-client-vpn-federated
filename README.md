@@ -37,6 +37,7 @@ A bit about this module
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| associated\_subnets | List of subnets to associate with the VPN endpoint | `list(string)` | n/a | yes |
 | client\_cidr\_block | (optional) describe your variable | `string` | n/a | yes |
 | name | Name to associate with various resources | `string` | n/a | yes |
 | server\_certificate\_arn | ARN of ACM certificate to use with Client VPN | `string` | n/a | yes |

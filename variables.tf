@@ -129,3 +129,8 @@ variable "additional_routes" {
     target_vpc_subnet_id   = string
   }))
 }
+
+variable "associated_subnets" {
+  type        = list(string)
+  description = "List of subnets to associate with the VPN endpoint"
+}
