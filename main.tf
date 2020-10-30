@@ -45,7 +45,7 @@ resource "aws_ec2_client_vpn_endpoint" "this" {
 }
 
 resource "aws_ec2_client_vpn_network_association" "this" {
-  for_each = zipmap(var.associated_subnets, var.associated_subnets) #avoid ordering errors by using a for_each instead of count
+  for_each = toset(var.associated_subnets) #avoid ordering errors by using a for_each instead of count
 
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.this.id
   security_groups        = var.network_association_security_groups
@@ -57,4 +57,13 @@ resource "aws_ec2_client_vpn_network_association" "this" {
       # subnet_id
     ]
   }
+}
+
+resource "aws_ec2_client_vpn_route" "additional" {
+  count = length(var.additional_routes)
+
+  description            = try(var.additional_routes[count.index].description, null)
+  destination_cidr_block = var.additional_routes[count.index].destination_cidr_block
+  client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.this.id
+  target_vpc_subnet_id   = var.additional_routes[count.index].target_vpc_subnet_id
 }

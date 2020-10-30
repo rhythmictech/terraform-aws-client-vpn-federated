@@ -118,3 +118,14 @@ variable "network_association_security_groups" {
   description = "List of security groups to attach to the client vpn network associations"
   type        = list(string)
 }
+
+variable "additional_routes" {
+  default     = []
+  description = "A list of additional routes that should be attached to the Client VPN endpoint"
+
+  type = list(object({
+    destination_cidr_block = string
+    description            = string
+    target_vpc_subnet_id   = string
+  }))
+}
