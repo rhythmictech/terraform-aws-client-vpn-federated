@@ -24,18 +24,28 @@ A bit about this module
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.14 |
+| terraform | ~> 0.13.0 |
+| aws | ~> 3.5 |
 
 ## Providers
 
-No provider.
+| Name | Version |
+|------|---------|
+| aws | ~> 3.5 |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| name | Moniker to apply to all resources in the module | `string` | n/a | yes |
-| tags | User-Defined tags | `map(string)` | `{}` | no |
+| client\_cidr\_block | (optional) describe your variable | `string` | n/a | yes |
+| name | Name to associate with various resources | `string` | n/a | yes |
+| server\_certificate\_arn | ARN of ACM certificate to use with Client VPN | `string` | n/a | yes |
+| log\_retention\_days | How long to keep VPN logs. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the log group are always retained and never expire. | `number` | `30` | no |
+| network\_association\_security\_groups | List of security groups to attach to the client vpn network associations | `list(string)` | `null` | no |
+| saml\_metadata\_document | Optional SAML metadata document. Must include this or `saml_provider_arn` | `string` | `null` | no |
+| saml\_provider\_arn | Optional SAML provider ARN. Must include this or `saml_metadata_document` | `string` | `null` | no |
+| split\_tunnel\_enabled | Whether to enable split tunnelling | `bool` | `true` | no |
+| tags | Map of strings containing tags for AWS resources | `map(string)` | `{}` | no |
 
 ## Outputs
 
