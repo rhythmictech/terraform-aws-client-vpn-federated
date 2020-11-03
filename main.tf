@@ -44,8 +44,11 @@ resource "aws_ec2_client_vpn_endpoint" "this" {
   }
 }
 
-resource "aws_default_security_group" "this" {
-  vpc_id = var.vpc_id
+resource "aws_security_group" "this" {
+  name_prefix = var.name
+  description = "Client VPN network associations"
+  tags        = var.tags
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "Allow self access only by default"
@@ -60,7 +63,7 @@ resource "aws_default_security_group" "this" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] #tfsec:ignore:AWS009
   }
 }
 
@@ -68,8 +71,12 @@ resource "aws_ec2_client_vpn_network_association" "this" {
   for_each = toset(var.associated_subnets) #avoid ordering errors by using a for_each instead of count
 
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.this.id
-  security_groups        = var.network_association_security_groups
   subnet_id              = each.key
+
+  security_groups = concat(
+    [aws_security_group.this.id],
+    var.additional_security_groups
+  )
 
   lifecycle {
     ignore_changes = [
@@ -77,6 +84,17 @@ resource "aws_ec2_client_vpn_network_association" "this" {
       # subnet_id
     ]
   }
+}
+
+resource "aws_ec2_client_vpn_authorization_rule" "rules" {
+  count = length(var.authorization_rules)
+
+  access_group_id        = var.authorization_rules[count.index].access_group_id
+  authorize_all_groups   = var.authorization_rules[count.index].authorize_all_groups
+  client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.this.id
+  description            = var.authorization_rules[count.index].description
+  target_network_cidr    = var.authorization_rules[count.index].target_network_cidr
+
 }
 
 resource "aws_ec2_client_vpn_route" "additional" {

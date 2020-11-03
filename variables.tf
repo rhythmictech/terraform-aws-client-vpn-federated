@@ -3,6 +3,17 @@ variable "name" {
   type        = string
 }
 
+variable "authorization_rules" {
+  type = list(object({
+    name                 = string
+    access_group_id      = string
+    authorize_all_groups = bool
+    description          = string
+    target_network_cidr  = string
+  }))
+  description = "List of objects describing the authorization rules for the client vpn"
+}
+
 variable "log_retention_days" {
   default     = 30
   description = "How long to keep VPN logs. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the log group are always retained and never expire."
@@ -101,7 +112,7 @@ variable "server_certificate_arn" {
     condition = (
       var.server_certificate_arn == null ||
       length(regexall(
-        "^arn:aws:acm:(?P<region>^(?:us(?:-gov)?|ap|ca|cn|eu|sa)-(?:central|(?:north|south)?(?:east|west)?)-\\d$):(?P<account_id>\\d{12}):saml-provider/(?P<provider_name>[\\w+=,\\.@-]+)$",
+        "^arn:aws:acm:(?P<region>(?:us(?:-gov)?|ap|ca|cn|eu|sa)-(?:central|(?:north|south)?(?:east|west)?)-\\d):(?P<account_id>\\d{12}):certificate\\/(?P<certificate_id>[[:alnum:]]{8}-(?:[[:alnum:]]{4}-){3}[[:alnum:]]{12})$",
         var.server_certificate_arn
       )) > 0
     )
@@ -114,8 +125,8 @@ variable "split_tunnel_enabled" {
   type        = bool
 }
 
-variable "network_association_security_groups" {
-  default     = null
+variable "additional_security_groups" {
+  default     = []
   description = "List of security groups to attach to the client vpn network associations"
   type        = list(string)
 }
