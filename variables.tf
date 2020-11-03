@@ -14,7 +14,7 @@ variable "authorization_rules" {
   description = "List of objects describing the authorization rules for the client vpn"
 }
 
-variable "log_retention_days" {
+variable "cloudwatch_log_retention_days" {
   default     = 30
   description = "How long to keep VPN logs. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the log group are always retained and never expire."
   type        = number
@@ -44,7 +44,7 @@ variable "log_retention_days" {
           3653,
           0
         ],
-        var.log_retention_days
+        var.cloudwatch_log_retention_days
       )
     )
   }

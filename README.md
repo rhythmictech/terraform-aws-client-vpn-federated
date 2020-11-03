@@ -45,7 +45,7 @@ A bit about this module
 | vpc\_id | ID of VPC to attach VPN to | `string` | n/a | yes |
 | additional\_routes | A list of additional routes that should be attached to the Client VPN endpoint | <pre>list(object({<br>    destination_cidr_block = string<br>    description            = string<br>    target_vpc_subnet_id   = string<br>  }))</pre> | `[]` | no |
 | additional\_security\_groups | List of security groups to attach to the client vpn network associations | `list(string)` | `[]` | no |
-| log\_retention\_days | How long to keep VPN logs. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the log group are always retained and never expire. | `number` | `30` | no |
+| cloudwatch\_log\_retention\_days | How long to keep VPN logs. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the log group are always retained and never expire. | `number` | `30` | no |
 | saml\_metadata\_document | Optional SAML metadata document. Must include this or `saml_provider_arn` | `string` | `null` | no |
 | saml\_provider\_arn | Optional SAML provider ARN. Must include this or `saml_metadata_document` | `string` | `null` | no |
 | split\_tunnel\_enabled | Whether to enable split tunnelling | `bool` | `true` | no |
