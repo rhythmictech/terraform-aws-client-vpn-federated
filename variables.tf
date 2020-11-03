@@ -1,6 +1,23 @@
-variable "name" {
-  description = "Name to associate with various resources"
-  type        = string
+variable "additional_routes" {
+  default     = []
+  description = "A list of additional routes that should be attached to the Client VPN endpoint"
+
+  type = list(object({
+    destination_cidr_block = string
+    description            = string
+    target_vpc_subnet_id   = string
+  }))
+}
+
+variable "additional_security_groups" {
+  default     = []
+  description = "List of security groups to attach to the client vpn network associations"
+  type        = list(string)
+}
+
+variable "associated_subnets" {
+  type        = list(string)
+  description = "List of subnets to associate with the VPN endpoint"
 }
 
 variable "authorization_rules" {
@@ -12,6 +29,11 @@ variable "authorization_rules" {
     target_network_cidr  = string
   }))
   description = "List of objects describing the authorization rules for the client vpn"
+}
+
+variable "client_cidr_block" {
+  type        = string
+  description = "(optional) describe your variable"
 }
 
 variable "cloudwatch_log_retention_days" {
@@ -50,10 +72,9 @@ variable "cloudwatch_log_retention_days" {
   }
 }
 
-variable "tags" {
-  default     = {}
-  description = "Map of strings containing tags for AWS resources"
-  type        = map(string)
+variable "name" {
+  description = "Name to associate with various resources"
+  type        = string
 }
 
 variable "saml_metadata_document" {
@@ -97,11 +118,6 @@ module "saml_not_defined_twice" {
   error_message = "Must not define both `saml_metadata_document` and `saml_provider_arn`."
 }
 
-variable "client_cidr_block" {
-  type        = string
-  description = "(optional) describe your variable"
-}
-
 variable "server_certificate_arn" {
   description = "ARN of ACM certificate to use with Client VPN"
   type        = string
@@ -125,26 +141,10 @@ variable "split_tunnel_enabled" {
   type        = bool
 }
 
-variable "additional_security_groups" {
-  default     = []
-  description = "List of security groups to attach to the client vpn network associations"
-  type        = list(string)
-}
-
-variable "additional_routes" {
-  default     = []
-  description = "A list of additional routes that should be attached to the Client VPN endpoint"
-
-  type = list(object({
-    destination_cidr_block = string
-    description            = string
-    target_vpc_subnet_id   = string
-  }))
-}
-
-variable "associated_subnets" {
-  type        = list(string)
-  description = "List of subnets to associate with the VPN endpoint"
+variable "tags" {
+  default     = {}
+  description = "Map of strings containing tags for AWS resources"
+  type        = map(string)
 }
 
 variable "vpc_id" {
