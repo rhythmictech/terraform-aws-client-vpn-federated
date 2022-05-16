@@ -1,23 +1,39 @@
-# terraform-terraform-template
-Template repository for terraform modules. Good for any cloud and any provider.
+# terraform-aws-client-vpn-federated
+Creates an AWS Client VPN with federated client authentication
 
-[![tflint](https://github.com/rhythmictech/terraform-terraform-template/workflows/tflint/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-terraform-template/actions?query=workflow%3Atflint+event%3Apush+branch%3Amaster)
-[![tfsec](https://github.com/rhythmictech/terraform-terraform-template/workflows/tfsec/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-terraform-template/actions?query=workflow%3Atfsec+event%3Apush+branch%3Amaster)
-[![yamllint](https://github.com/rhythmictech/terraform-terraform-template/workflows/yamllint/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-terraform-template/actions?query=workflow%3Ayamllint+event%3Apush+branch%3Amaster)
-[![misspell](https://github.com/rhythmictech/terraform-terraform-template/workflows/misspell/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-terraform-template/actions?query=workflow%3Amisspell+event%3Apush+branch%3Amaster)
-[![pre-commit-check](https://github.com/rhythmictech/terraform-terraform-template/workflows/pre-commit-check/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-terraform-template/actions?query=workflow%3Apre-commit-check+event%3Apush+branch%3Amaster)
+[![tflint](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/workflows/tflint/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/actions?query=workflow%3Atflint+event%3Apush+branch%3Amaster)
+[![tfsec](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/workflows/tfsec/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/actions?query=workflow%3Atfsec+event%3Apush+branch%3Amaster)
+[![yamllint](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/workflows/yamllint/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/actions?query=workflow%3Ayamllint+event%3Apush+branch%3Amaster)
+[![misspell](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/workflows/misspell/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/actions?query=workflow%3Amisspell+event%3Apush+branch%3Amaster)
+[![pre-commit-check](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/workflows/pre-commit-check/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-client-vpn-federated/actions?query=workflow%3Apre-commit-check+event%3Apush+branch%3Amaster)
 <a href="https://twitter.com/intent/follow?screen_name=RhythmicTech"><img src="https://img.shields.io/twitter/follow/RhythmicTech?style=social&logo=twitter" alt="follow on Twitter"></a>
 
 ## Example
+
 Here's what using the module will look like
 ```hcl
-module "example" {
-  source = "rhythmictech/terraform-mycloud-mymodule
+module "vpn" {
+  source = "rhythmictech/client-vpn-federated/aws"
+
+  name                   = "vpn"
+  additional_routes      = var.additional_routes
+  associated_subnets     = var.associated_subnets
+  client_cidr_block      = var.vpn_client_cidr_block
+  saml_metadata_document = file("${path.module}/saml-metadata.xml")
+  server_certificate_arn = data.aws_acm_certificate.com_cert.arn
+  tags                   = local.tags
+  vpc_id                 = var.vpc_id
+
+  authorization_rules = [{
+    name                 = "allow-all"
+    access_group_id      = null
+    authorize_all_groups = true
+    description          = "Allow All Groups"
+    target_network_cidr  = var.cidr_block
+  }]
+
 }
 ```
-
-## About
-A bit about this module
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
