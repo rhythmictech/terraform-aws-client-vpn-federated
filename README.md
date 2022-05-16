@@ -53,8 +53,8 @@ module "vpn" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_saml_is_defined"></a> [saml\_is\_defined](#module\_saml\_is\_defined) | rhythmictech/errorcheck/terraform | ~> 1.0 |
-| <a name="module_saml_not_defined_twice"></a> [saml\_not\_defined\_twice](#module\_saml\_not\_defined\_twice) | rhythmictech/errorcheck/terraform | ~> 1.0 |
+| <a name="module_saml_is_defined"></a> [saml\_is\_defined](#module\_saml\_is\_defined) | rhythmictech/errorcheck/terraform | ~> 1.2 |
+| <a name="module_saml_not_defined_twice"></a> [saml\_not\_defined\_twice](#module\_saml\_not\_defined\_twice) | rhythmictech/errorcheck/terraform | ~> 1.2 |
 
 ## Resources
 

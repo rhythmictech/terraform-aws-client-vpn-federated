@@ -103,7 +103,7 @@ variable "saml_provider_arn" {
 
 module "saml_is_defined" {
   source  = "rhythmictech/errorcheck/terraform"
-  version = "~> 1.0"
+  version = "~> 1.2"
 
   assert        = var.saml_metadata_document != null || var.saml_provider_arn != null
   error_message = "Must define a value for either `saml_metadata_document` or `saml_provider_arn`."
@@ -111,7 +111,7 @@ module "saml_is_defined" {
 
 module "saml_not_defined_twice" {
   source  = "rhythmictech/errorcheck/terraform"
-  version = "~> 1.0"
+  version = "~> 1.2"
 
   assert        = ! (var.saml_metadata_document != null && var.saml_provider_arn != null)
   error_message = "Must not define both `saml_metadata_document` and `saml_provider_arn`."
