@@ -16,24 +16,23 @@ variable "additional_security_groups" {
 }
 
 variable "associated_subnets" {
-  type        = list(string)
   description = "List of subnets to associate with the VPN endpoint"
+  type        = list(string)
 }
 
 variable "authorization_rules" {
+  description = "List of objects describing the authorization rules for the client vpn"
   type = list(object({
-    name                 = string
     access_group_id      = string
     authorize_all_groups = bool
     description          = string
     target_network_cidr  = string
   }))
-  description = "List of objects describing the authorization rules for the client vpn"
 }
 
 variable "client_cidr_block" {
+  description = "IPv4 CIDR block for client addresses. /22 or greater"
   type        = string
-  description = "(optional) describe your variable"
 }
 
 variable "cloudwatch_log_retention_days" {
@@ -148,6 +147,6 @@ variable "tags" {
 }
 
 variable "vpc_id" {
-  type        = string
   description = "ID of VPC to attach VPN to"
+  type        = string
 }
