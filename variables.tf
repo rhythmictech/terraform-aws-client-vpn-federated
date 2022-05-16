@@ -136,7 +136,7 @@ variable "server_certificate_arn" {
 
 variable "split_tunnel_enabled" {
   default     = true
-  description = "Whether to enable split tunnelling"
+  description = "Whether to enable split tunneling"
   type        = bool
 }
 
