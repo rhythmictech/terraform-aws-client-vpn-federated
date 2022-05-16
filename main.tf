@@ -7,6 +7,7 @@ locals {
   )
 }
 
+#tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "vpn" {
   name_prefix       = "vpn-${var.name}"
   retention_in_days = var.cloudwatch_log_retention_days
