@@ -16,24 +16,23 @@ variable "additional_security_groups" {
 }
 
 variable "associated_subnets" {
-  type        = list(string)
   description = "List of subnets to associate with the VPN endpoint"
+  type        = list(string)
 }
 
 variable "authorization_rules" {
+  description = "List of objects describing the authorization rules for the client vpn"
   type = list(object({
-    name                 = string
     access_group_id      = string
     authorize_all_groups = bool
     description          = string
     target_network_cidr  = string
   }))
-  description = "List of objects describing the authorization rules for the client vpn"
 }
 
 variable "client_cidr_block" {
+  description = "IPv4 CIDR block for client addresses. /22 or greater"
   type        = string
-  description = "(optional) describe your variable"
 }
 
 variable "cloudwatch_log_retention_days" {
@@ -72,6 +71,12 @@ variable "cloudwatch_log_retention_days" {
   }
 }
 
+variable "dns_servers" {
+  default     = []
+  description = "Up to two DNS servers"
+  type        = list(string)
+}
+
 variable "name" {
   description = "Name to associate with various resources"
   type        = string
@@ -104,7 +109,7 @@ variable "saml_provider_arn" {
 
 module "saml_is_defined" {
   source  = "rhythmictech/errorcheck/terraform"
-  version = "~> 1.0"
+  version = "~> 1.2"
 
   assert        = var.saml_metadata_document != null || var.saml_provider_arn != null
   error_message = "Must define a value for either `saml_metadata_document` or `saml_provider_arn`."
@@ -112,7 +117,7 @@ module "saml_is_defined" {
 
 module "saml_not_defined_twice" {
   source  = "rhythmictech/errorcheck/terraform"
-  version = "~> 1.0"
+  version = "~> 1.2"
 
   assert        = ! (var.saml_metadata_document != null && var.saml_provider_arn != null)
   error_message = "Must not define both `saml_metadata_document` and `saml_provider_arn`."
@@ -137,7 +142,7 @@ variable "server_certificate_arn" {
 
 variable "split_tunnel_enabled" {
   default     = true
-  description = "Whether to enable split tunnelling"
+  description = "Whether to enable split tunneling"
   type        = bool
 }
 
@@ -148,6 +153,6 @@ variable "tags" {
 }
 
 variable "vpc_id" {
-  type        = string
   description = "ID of VPC to attach VPN to"
+  type        = string
 }
