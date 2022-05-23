@@ -29,6 +29,7 @@ resource "aws_iam_saml_provider" "this" {
 resource "aws_ec2_client_vpn_endpoint" "this" {
   description            = "Client VPN"
   client_cidr_block      = var.client_cidr_block
+  dns_servers            = var.dns_servers
   server_certificate_arn = var.server_certificate_arn
   split_tunnel           = var.split_tunnel_enabled
   tags                   = local.tags

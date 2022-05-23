@@ -71,6 +71,12 @@ variable "cloudwatch_log_retention_days" {
   }
 }
 
+variable "dns_servers" {
+  default     = []
+  description = "Up to two DNS servers"
+  type        = list(string)
+}
+
 variable "name" {
   description = "Name to associate with various resources"
   type        = string
