@@ -30,8 +30,10 @@ resource "aws_ec2_client_vpn_endpoint" "this" {
   description            = "Client VPN"
   client_cidr_block      = var.client_cidr_block
   dns_servers            = var.dns_servers
+  security_group_ids     = concat([aws_security_group.this.id], var.additional_security_groups)
   server_certificate_arn = var.server_certificate_arn
   split_tunnel           = var.split_tunnel_enabled
+  vpc_id                 = var.vpc_id
   tags                   = local.tags
 
   authentication_options {
@@ -67,10 +69,6 @@ resource "aws_ec2_client_vpn_network_association" "this" {
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.this.id
   subnet_id              = each.key
 
-  security_groups = concat(
-    [aws_security_group.this.id],
-    var.additional_security_groups
-  )
 }
 
 resource "aws_ec2_client_vpn_authorization_rule" "rules" {
