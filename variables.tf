@@ -123,6 +123,39 @@ module "saml_not_defined_twice" {
   error_message = "Must not define both `saml_metadata_document` and `saml_provider_arn`."
 }
 
+variable "self_service_saml_metadata_document" {
+  default     = null
+  description = "Optional SAML metadata document for the self-service portal. Must include this or `self_service_saml_provider_arn` to enable self-service; omit both to disable."
+  type        = string
+}
+
+variable "self_service_saml_provider_arn" {
+  default     = null
+  description = "Optional ARN of an existing IAM SAML provider for the self-service portal. Must include this or `self_service_saml_metadata_document` to enable self-service; omit both to disable."
+  type        = string
+
+  validation {
+    error_message = "Invalid self-service SAML provider ARN."
+
+    condition = (
+      var.self_service_saml_provider_arn == null ||
+      try(length(regexall(
+        "^arn:aws:iam::(?P<account_id>\\d{12}):saml-provider/(?P<provider_name>[\\w+=,\\.@-]+)$",
+        var.self_service_saml_provider_arn
+        )) > 0,
+        false
+    ))
+  }
+}
+
+module "self_service_saml_not_defined_twice" {
+  source  = "rhythmictech/errorcheck/terraform"
+  version = "~> 1.2"
+
+  assert        = !(var.self_service_saml_metadata_document != null && var.self_service_saml_provider_arn != null)
+  error_message = "Must not define both `self_service_saml_metadata_document` and `self_service_saml_provider_arn`."
+}
+
 variable "server_certificate_arn" {
   description = "ARN of ACM certificate to use with Client VPN"
   type        = string
