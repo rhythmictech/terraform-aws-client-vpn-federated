@@ -26,6 +26,13 @@ resource "aws_iam_saml_provider" "this" {
   saml_metadata_document = var.saml_metadata_document
 }
 
+resource "aws_iam_saml_provider" "self_service" {
+  count = var.self_service_saml_metadata_document != null ? 1 : 0
+
+  name                   = "${var.name}-self-service"
+  saml_metadata_document = var.self_service_saml_metadata_document
+}
+
 resource "aws_ec2_client_vpn_endpoint" "this" {
   description            = "Client VPN"
   client_cidr_block      = var.client_cidr_block
@@ -37,8 +44,9 @@ resource "aws_ec2_client_vpn_endpoint" "this" {
   tags                   = local.tags
 
   authentication_options {
-    type              = "federated-authentication"
-    saml_provider_arn = try(aws_iam_saml_provider.this[0].arn, var.saml_provider_arn)
+    type                           = "federated-authentication"
+    saml_provider_arn              = try(aws_iam_saml_provider.this[0].arn, var.saml_provider_arn)
+    self_service_saml_provider_arn = try(aws_iam_saml_provider.self_service[0].arn, var.self_service_saml_provider_arn, null)
   }
 
   connection_log_options {

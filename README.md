@@ -55,6 +55,7 @@ module "vpn" {
 |------|--------|---------|
 | <a name="module_saml_is_defined"></a> [saml\_is\_defined](#module\_saml\_is\_defined) | rhythmictech/errorcheck/terraform | ~> 1.2 |
 | <a name="module_saml_not_defined_twice"></a> [saml\_not\_defined\_twice](#module\_saml\_not\_defined\_twice) | rhythmictech/errorcheck/terraform | ~> 1.2 |
+| <a name="module_self_service_saml_not_defined_twice"></a> [self\_service\_saml\_not\_defined\_twice](#module\_self\_service\_saml\_not\_defined\_twice) | rhythmictech/errorcheck/terraform | ~> 1.2 |
 
 ## Resources
 
@@ -66,6 +67,7 @@ module "vpn" {
 | [aws_ec2_client_vpn_endpoint.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_client_vpn_endpoint) | resource |
 | [aws_ec2_client_vpn_network_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_client_vpn_network_association) | resource |
 | [aws_ec2_client_vpn_route.additional](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_client_vpn_route) | resource |
+| [aws_iam_saml_provider.self_service](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_saml_provider) | resource |
 | [aws_iam_saml_provider.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_saml_provider) | resource |
 | [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 
@@ -83,6 +85,8 @@ module "vpn" {
 | <a name="input_name"></a> [name](#input\_name) | Name to associate with various resources | `string` | n/a | yes |
 | <a name="input_saml_metadata_document"></a> [saml\_metadata\_document](#input\_saml\_metadata\_document) | Optional SAML metadata document. Must include this or `saml_provider_arn` | `string` | `null` | no |
 | <a name="input_saml_provider_arn"></a> [saml\_provider\_arn](#input\_saml\_provider\_arn) | Optional SAML provider ARN. Must include this or `saml_metadata_document` | `string` | `null` | no |
+| <a name="input_self_service_saml_metadata_document"></a> [self\_service\_saml\_metadata\_document](#input\_self\_service\_saml\_metadata\_document) | Optional SAML metadata document for the self-service portal. Must include this or `self_service_saml_provider_arn` to enable self-service; omit both to disable. | `string` | `null` | no |
+| <a name="input_self_service_saml_provider_arn"></a> [self\_service\_saml\_provider\_arn](#input\_self\_service\_saml\_provider\_arn) | Optional ARN of an existing IAM SAML provider for the self-service portal. Must include this or `self_service_saml_metadata_document` to enable self-service; omit both to disable. | `string` | `null` | no |
 | <a name="input_server_certificate_arn"></a> [server\_certificate\_arn](#input\_server\_certificate\_arn) | ARN of ACM certificate to use with Client VPN | `string` | n/a | yes |
 | <a name="input_split_tunnel_enabled"></a> [split\_tunnel\_enabled](#input\_split\_tunnel\_enabled) | Whether to enable split tunneling | `bool` | `true` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of strings containing tags for AWS resources | `map(string)` | `{}` | no |
@@ -93,6 +97,7 @@ module "vpn" {
 | Name | Description |
 |------|-------------|
 | <a name="output_vpn_dns_name"></a> [vpn\_dns\_name](#output\_vpn\_dns\_name) | DNS name to be used by clients when establishing VPN session |
+| <a name="output_self_service_saml_provider_arn"></a> [self\_service\_saml\_provider\_arn](#output\_self\_service\_saml\_provider\_arn) | ARN of the IAM SAML provider created for the self-service portal (null if not created by this module) |
 | <a name="output_vpn_endpoint_security_groups"></a> [vpn\_endpoint\_security\_groups](#output\_vpn\_endpoint\_security\_groups) | VPN endpoint security groups |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
