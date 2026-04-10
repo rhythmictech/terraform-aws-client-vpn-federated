@@ -39,6 +39,7 @@ resource "aws_ec2_client_vpn_endpoint" "this" {
   dns_servers            = var.dns_servers
   security_group_ids     = concat([aws_security_group.this.id], var.additional_security_groups)
   server_certificate_arn = var.server_certificate_arn
+  self_service_portal    = var.self_service_portal
   split_tunnel           = var.split_tunnel_enabled
   vpc_id                 = var.vpc_id
   tags                   = local.tags
