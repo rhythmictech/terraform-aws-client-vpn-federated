@@ -173,6 +173,17 @@ variable "server_certificate_arn" {
   }
 }
 
+variable "self_service_portal" {
+  default     = "disabled"
+  description = "Whether to enable the self-service portal. Valid values are `enabled` or `disabled`."
+  type        = string
+
+  validation {
+    error_message = "Valid values are `enabled` or `disabled`."
+    condition     = contains(["enabled", "disabled"], var.self_service_portal)
+  }
+}
+
 variable "split_tunnel_enabled" {
   default     = true
   description = "Whether to enable split tunneling"
